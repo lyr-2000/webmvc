@@ -82,7 +82,10 @@ type Router struct {
 func (r *Router) RegisterHandler(method string, path string, proxyHandler func(c Ctx, h Handler) interface{}, h Handler) {
 	log.Printf("[%v] -> [%v]\n", method, path)
 	r.Router.Handle(method, path, func(writer http.ResponseWriter, request *http.Request, p router.Params) {
-		var ctx = r.CtxFactory(writer, request, p)
+		var ctx Ctx
+		if r.CtxFactory != nil {
+			ctx = r.CtxFactory(writer, request, p)
+		}
 		if ctx == nil {
 			ctx = &CtxDefault{
 				W:      writer,
