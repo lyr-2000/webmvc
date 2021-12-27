@@ -31,6 +31,7 @@ func SetPrimitive(dest interface{}, from interface{}) error {
 	switch dtype {
 	case reflect.String:
 		setAddr_(&destStruct, cast.ToString(from))
+
 	case reflect.Int8:
 		setAddr_(&destStruct, cast.ToInt8(from))
 	case reflect.Int16:
@@ -47,10 +48,22 @@ func SetPrimitive(dest interface{}, from interface{}) error {
 		setAddr_(&destStruct, cast.ToFloat64(from))
 	case reflect.Bool:
 		setAddr_(&destStruct, cast.ToBool(from))
+	case reflect.Uint8:
+		setAddr_(&destStruct, cast.ToUint8(from))
+	case reflect.Uint:
+		setAddr_(&destStruct, cast.ToUint(from))
+	case reflect.Uint16:
+		setAddr_(&destStruct, cast.ToUint16(from))
+	case reflect.Uint32:
+		setAddr_(&destStruct, cast.ToUint32(from))
+	case reflect.Uint64:
+		setAddr_(&destStruct, cast.ToUint64(from))
 	default:
 		switch dest.(type) {
 		case *time.Time:
 			setAddr_(&destStruct, cast.ToTime(from))
+		case *time.Duration:
+			setAddr_(&destStruct, cast.ToDuration(from))
 		default:
 			return fmt.Errorf("cannot parsed values")
 		}
