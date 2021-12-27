@@ -13,31 +13,6 @@ type CtxDefault struct {
 	Params router.Params
 }
 
-func (c CtxDefault) Bind(res interface{}) error {
-	//TODO implement me
-	panic("implement me")
-}
-
-func (c CtxDefault) BindJSON(res interface{}) error {
-	//TODO implement me
-	panic("implement me")
-}
-
-func (c CtxDefault) BindParam(res interface{}) error {
-	//TODO implement me
-	panic("implement me")
-}
-
-func (c CtxDefault) BindQuery(res interface{}) error {
-	//TODO implement me
-	panic("implement me")
-}
-
-func (c CtxDefault) BindForm(res interface{}) error {
-	//TODO implement me
-	panic("implement me")
-}
-
 func (c CtxDefault) Response() http.ResponseWriter {
 	//TODO implement me
 	return c.W
@@ -104,10 +79,9 @@ func (r *Router) RegisterHandler(method string, path string, proxyHandler func(c
 		if res == nil {
 			return
 		}
-		//如果 有返回值，就调用 后置处理器处理返回值
-		for _, postHandler := range r.PostResultHandler {
-			var ok = postHandler(ctx, res)
-			if ok {
+
+		for i := len(r.PostResultHandler) - 1; i >= 0; i-- {
+			if r.PostResultHandler[i](ctx, res) {
 				return
 			}
 		}
